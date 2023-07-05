@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.12.5
+
 jobs:
   build-frontend:
     docker:
@@ -20,11 +21,11 @@ jobs:
           key: frontend-build
       - slack/notify:
           event: fail
-          channel: A05FH2F6YRH
+          channel: $SLACK_DEFAULT_CHANNEL
           template: basic_fail_1
       - slack/notify:
           event: pass
-          channel: A05FH2F6YRH
+          channel: $SLACK_DEFAULT_CHANNEL
           template: success_tagged_deploy_1
 
   build-backend:
@@ -43,14 +44,6 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
-          event: fail
-          channel: A05FH2F6YRH
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          channel: A05FH2F6YRH
-          template: success_tagged_deploy_1
 
   test-frontend:
     docker:
@@ -128,7 +121,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      - build-frontend:
+               context: my-context-megaluka
       - build-backend
       - test-frontend:
           requires: [build-frontend]

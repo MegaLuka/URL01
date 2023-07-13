@@ -158,7 +158,8 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            aws ec2 describe-instances \ 
+            echo "[all]" > inventory
+            aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> inventory
@@ -166,7 +167,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - URL01/.circleci/ansible/inventory.txt
+            - inventory.txt
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -179,7 +180,7 @@ jobs:
           fingerprints:
             - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
       - attach_workspace:
-          at: URL01/.circleci/ansible/inventory.txt
+          at: ~/
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace

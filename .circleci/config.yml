@@ -133,8 +133,11 @@ jobs:
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
+    working_directory: /tmp
+      
     steps:
       - checkout
+      - run: mkdir -p workspace
       - run:
           name: Install gzip
           command: |
@@ -158,16 +161,16 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[all]" > inventory
+            echo "[all]" > workspace/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text >> inventory
+              --output text >> workspace/inventory
      # - destroy-environment
       - persist_to_workspace:
-          root: ~/
+          root: workspace
           paths:
-            - inventory.txt
+            - inventory
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -180,7 +183,7 @@ jobs:
           fingerprints:
             - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
       - attach_workspace:
-          at: ~/
+          at: /tmp/workspace
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace

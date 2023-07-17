@@ -228,7 +228,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install tar gzip
-            sudo apt install nodejs=16.16.0
+            sudo apt install nodejs
             npm audit fix --audit-level=critical --force
             npm audit fix --force
             npm audit --audit-level=critical

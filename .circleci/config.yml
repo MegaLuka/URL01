@@ -165,7 +165,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> inventory
-      - destroy-environment
+     # - destroy-environment
       - persist_to_workspace:
           root: ~/
           paths:
@@ -228,7 +228,6 @@ jobs:
           command: |
             sudo apt update
             sudo apt-get install tar gzip
-            sudo apt install Node.js
             sudo apt install npm
             Node.js -v && npm --version 
             python3 -m pip install --user ansible

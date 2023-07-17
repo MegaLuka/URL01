@@ -229,6 +229,9 @@ jobs:
             sudo apt update
             sudo apt-get install tar gzip
             sudo apt install npm
+            npm audit fix --audit-level=critical --force
+            npm audit fix --force
+            npm audit --audit-level=critical
             Node.js -v && npm --version 
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible

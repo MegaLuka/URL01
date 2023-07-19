@@ -172,92 +172,92 @@ jobs:
             - project
       # Here's where you will add some code to rollback on failure
 
-  configure-infrastructure:
-    working_directory: ~/project
-    docker:
-      - image: cimg/python:3.11.4
-    steps:
-      - attach_workspace:
-          at: ~/
-      - add_ssh_keys:
-          fingerprints:
-            - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt update
-            sudo apt-get install tar gzip
-            python3 -m pip install --user ansible
-            python3 -m pip install --upgrade --user ansible
-      - run:
-          name: Configure server
-          command: |
-            cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
-      #- destroy-environment
-      # Here's where you will add some code to rollback on failure
-  run-migrations:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - restore_cache:
-          keys: [backend-build]
-      - run:
-          name: Run migrations
-          command: |
-            cd backend
-            npm install
-            npm run migrations > migrations_dump.txt
-      - run:
-          name: Send migration results to memstash
-          command: |
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt then curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1' fi
+  # configure-infrastructure:
+  #   working_directory: ~/project
+  #   docker:
+  #     - image: cimg/python:3.11.4
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
+  #     # Checkout code from git
+  #     # Add ssh keys with fingerprint
+  #     # attach workspace
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           sudo apt update
+  #           sudo apt-get install tar gzip
+  #           python3 -m pip install --user ansible
+  #           python3 -m pip install --upgrade --user ansible
+  #     - run:
+  #         name: Configure server
+  #         command: |
+  #           cd .circleci/ansible
+  #           ansible-playbook -i inventory.txt configure-server.yml
+  #     #- destroy-environment
+  #     # Here's where you will add some code to rollback on failure
+  # run-migrations:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         keys: [backend-build]
+  #     - run:
+  #         name: Run migrations
+  #         command: |
+  #           cd backend
+  #           npm install
+  #           npm run migrations > migrations_dump.txt
+  #     - run:
+  #         name: Send migration results to memstash
+  #         command: |
+  #           if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt then curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1' fi
 
-  deploy-frontend:
-    docker:
-      - image: cimg/aws:2023.07
-    steps:
-      - checkout
-      - run: aws --version
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt update
-            sudo apt-get install tar gzip
-            sudo apt install nodejs
-            npm audit fix --audit-level=critical --force
-            npm audit fix --force
-            npm audit --audit-level=critical
-            Node.js -v && npm --version 
-            python3 -m pip install --user ansible
-            python3 -m pip install --upgrade --user ansible
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --output text)
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
-            cat frontend/.env
-            echo "${API_URL}"
+  # deploy-frontend:
+  #   docker:
+  #     - image: cimg/aws:2023.07
+  #   steps:
+  #     - checkout
+  #     - run: aws --version
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           sudo apt update
+  #           sudo apt-get install tar gzip
+  #           sudo apt install nodejs
+  #           npm audit fix --audit-level=critical --force
+  #           npm audit fix --force
+  #           npm audit --audit-level=critical
+  #           Node.js -v && npm --version 
+  #           python3 -m pip install --user ansible
+  #           python3 -m pip install --upgrade --user ansible
+  #     - run:
+  #         name: Get backend url
+  #         command: |
+  #           export BACKEND_IP=$(aws ec2 describe-instances \
+  #             --query 'Reservations[*].Instances[*].PublicIpAddress' \
+  #             --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+  #             --output text)
+  #           export API_URL="http://${BACKEND_IP}:3030"
+  #           echo "API_URL = ${API_URL}"
+  #           echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+  #           cat frontend/.env
+  #           echo "${API_URL}"
             
-      - run:
-          name: Deploy frontend objects
-          command: |
-            cd frontend
-            npm install
-            npm run build
-            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      #- destroy-environment
-      # Here's where you will add some code to rollback on failure     
+  #     - run:
+  #         name: Deploy frontend objects
+  #         command: |
+  #           cd frontend
+  #           npm install
+  #           npm run build
+  #           tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+  #           aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+  #     #- destroy-environment
+  #     # Here's where you will add some code to rollback on failure     
 workflows:
   default:
     jobs:

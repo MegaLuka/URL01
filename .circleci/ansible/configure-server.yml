@@ -20,6 +20,7 @@
       ansible.builtin.yum:
           name: python3
           state: present
+    
         
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
@@ -34,4 +35,5 @@
     - TYPEORM_MIGRATIONS_DIR: "{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
 
   roles:
+    - configure-server
     # Your code here

@@ -163,7 +163,6 @@ jobs:
             echo "[all]" > inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:udapeople,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> inventory
      # - destroy-environment
       - persist_to_workspace:
@@ -172,33 +171,33 @@ jobs:
             - project
       # Here's where you will add some code to rollback on failure
 
-  # configure-infrastructure:
-  #   working_directory: ~/project
-  #   docker:
-  #     - image: cimg/python:3.11.4
-  #   steps:
-  #     - attach_workspace:
-  #         at: ~/
-  #     - add_ssh_keys:
-  #         fingerprints:
-  #           - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
-  #     # Checkout code from git
-  #     # Add ssh keys with fingerprint
-  #     # attach workspace
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           sudo apt update
-  #           sudo apt-get install tar gzip
-  #           python3 -m pip install --user ansible
-  #           python3 -m pip install --upgrade --user ansible
-  #     - run:
-  #         name: Configure server
-  #         command: |
-  #           cd .circleci/ansible
-  #           ansible-playbook -i inventory.txt configure-server.yml
-  #     #- destroy-environment
-  #     # Here's where you will add some code to rollback on failure
+  configure-infrastructure:
+    working_directory: ~/project
+    docker:
+      - image: cimg/python:3.11.4
+    steps:
+      - attach_workspace:
+          at: ~/
+      - add_ssh_keys:
+          fingerprints:
+            - "3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt update
+            sudo apt-get install tar gzip
+            python3 -m pip install --user ansible
+            python3 -m pip install --upgrade --user ansible
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt configure-server.yml
+      #- destroy-environment
+      # Here's where you will add some code to rollback on failure
   # run-migrations:
   #   docker:
   #     - image: circleci/node:13.8.0
@@ -275,8 +274,8 @@ workflows:
           requires: [build-backend]
       - deploy-infrastructure:
           requires: [build-frontend, build-backend]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [build-backend]
       # - deploy-frontend:

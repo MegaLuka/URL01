@@ -1,4 +1,4 @@
-- name: "install python for Ansible."
-  ansible.builtin.yum:
+- name: "install nodejs for Ansible."
+  ansible.builtin.apt:
     name: nodejs
     state: present

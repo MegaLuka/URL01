@@ -1,3 +1,6 @@
+- name: "Upgrade for ubuntu."
+  import_tasks: upgrade.yml
+
 - name: "install python for ubuntu."
   import_tasks: python.yml
 

@@ -2,3 +2,5 @@
   ansible.builtin.yum:
     name: python3
     state: present
+    become: true
+    become_user: root

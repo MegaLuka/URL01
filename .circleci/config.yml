@@ -174,7 +174,8 @@ jobs:
   configure-infrastructure:
     working_directory: ~/project
     docker:
-      - image: python:3.7-alpine3.11
+     # - image: python:3.7-alpine3.11
+      - image: cimg/python:3.11.4
     steps:
       - attach_workspace:
           at: ~/
@@ -186,11 +187,11 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible
+            #apk add --update ansible
             #sudo apt update
             #sudo apt-get install tar gzip
-            #python3 -m pip install --user ansible
-            #python3 -m pip install --upgrade --user ansible
+            python3 -m pip install --user ansible
+            python3 -m pip install --upgrade --user ansible
       - run:
           name: Configure server
           command: |

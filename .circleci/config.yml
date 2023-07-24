@@ -181,7 +181,7 @@ jobs:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
           
       - attach_workspace:
-          at: ~/
+          at: ~/project
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
@@ -197,7 +197,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i /project/inventory.txt configure-server.yml
+            ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment
       # Here's where you will add some code to rollback on failure
   # run-migrations:

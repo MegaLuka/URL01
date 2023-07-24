@@ -192,7 +192,7 @@ jobs:
             #sudo apt-get install tar gzip
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
-            ansible -version
+            ansible --version
       - run:
           name: Configure server
           command: |

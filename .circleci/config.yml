@@ -137,6 +137,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - run: mkdir -p workspace
       - run:
           name: Install gzip
           command: |
@@ -160,25 +161,24 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[all]" > inventory
+            echo "[all]" > workspace/inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory
      # - destroy-environment
       - persist_to_workspace:
-          root: ~/project
+          root: workspace
           paths:
-            - project/inventory
+            - inventory
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
-    working_directory: ~/project
     docker:
      # - image: python:3.7-alpine3.11
       - image: cimg/python:3.11.4
     steps:
       - attach_workspace:
-          at: ~/project
+          at: ~/project/workspace
       - checkout
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]

@@ -166,9 +166,9 @@ jobs:
               --output text >> inventory
      # - destroy-environment
       - persist_to_workspace:
-          root: ~/
+          root: ~/project
           paths:
-            - project
+            - project/inventory
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -178,7 +178,7 @@ jobs:
       - image: cimg/python:3.11.4
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/project
       - checkout
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]

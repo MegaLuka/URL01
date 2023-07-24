@@ -1,5 +1,11 @@
-- name: "install pm2 for Ansible."
-  shell: |
-    npm install pm2
+- name: "install pm2"
   become: true
-  become_user: root
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: Executing node
+  shell: |
+    pm2 start ~/web/index.js -f

@@ -1,5 +1,15 @@
-- name: "upgrade apt"
-  ansible.builtin.apt:
-    upgrade: full
-    become: true
-    become_user: root
+- name: "update apt packages."
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
+
+
+- name: remove dependencies that are no longer required
+  become: true
+  apt:
+    autoremove: yes

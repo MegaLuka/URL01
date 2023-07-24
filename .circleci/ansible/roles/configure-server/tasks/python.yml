@@ -1,6 +1,6 @@
 - name: "install python for Ansible."
-  ansible.builtin.yum:
-    name: python3
+  ansible.builtin.apt:
+    name: python-is-python3
     state: present
     become: true
     become_user: root

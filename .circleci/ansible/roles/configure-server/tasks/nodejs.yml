@@ -1,6 +1,6 @@
-- name: "install nodejs for Ansible."
-  ansible.builtin.apt:
-    name: nodejs
-    state: present
-    become: true
-    ecome_user: root
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes

@@ -1,8 +1,8 @@
 - name: "Upgrade for ubuntu."
   import_tasks: upgrade.yml
 
-- name: "install python for ubuntu."
-  import_tasks: python.yml
+# - name: "install python for ubuntu."
+#   import_tasks: python.yml
 
 - name: "install nodejs for ubuntu."
   import_tasks: nodejs.yml

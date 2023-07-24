@@ -179,7 +179,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project/workspace
-      - checkout
+      #- checkout
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
       # Add ssh keys with fingerprint

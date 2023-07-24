@@ -132,7 +132,6 @@ jobs:
           key: backend-build
 
   deploy-infrastructure:
-    working_directory: ~/project
     docker:
       - image: amazon/aws-cli
     steps:
@@ -166,9 +165,9 @@ jobs:
               --output text >> inventory
      # - destroy-environment
       - persist_to_workspace:
-          root: ~/project
+          root: ~/
           paths:
-            - inventory
+            - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -182,7 +181,7 @@ jobs:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
           
       - attach_workspace:
-          at: ~/project
+          at: ~/
       # Add ssh keys with fingerprint
       # attach workspace
       - run:

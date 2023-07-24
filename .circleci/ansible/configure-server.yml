@@ -20,6 +20,38 @@
       ansible.builtin.yum:
           name: python3
           state: present
+    - name: "update apt packages."
+      become: true
+      apt:
+        update_cache: yes
+
+    - name: "upgrade packages"
+      become: true
+      apt:
+        upgrade: yes
+
+    - name: remove dependencies that are no longer required
+      become: true
+      apt:
+        autoremove: yes
+
+    - name: "install dependencies."
+      become: true
+      apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+    - name: "install pm2"
+      become: true
+      npm:
+        name: pm2
+        global: yes
+        production: yes
+      state: present
+
+    - name: Executing node
+      shell: |
+        pm2 start ~/web/index.js -f
     
         
   # Get the environment variables from CircleCI and add to the EC2 instance

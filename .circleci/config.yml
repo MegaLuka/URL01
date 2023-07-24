@@ -160,7 +160,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo "[web]" > inventory
+            echo "[all]" > inventory
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory
@@ -192,6 +192,7 @@ jobs:
             #sudo apt-get install tar gzip
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
+            ansible -version
       - run:
           name: Configure server
           command: |

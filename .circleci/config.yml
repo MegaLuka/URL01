@@ -159,11 +159,12 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            ls
             echo "[all]" > inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory.txt
-            echo inventory.txt
+            cat inventory.txt
             ls
      # - destroy-environment
       - persist_to_workspace:
@@ -199,10 +200,10 @@ jobs:
           name: Configure server
           command: |
             ls
-            echo inventory.txt
+            cat inventory.txt
             cd .circleci/ansible
             ls
-            echo inventory.txt
+            cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment
       # Here's where you will add some code to rollback on failure

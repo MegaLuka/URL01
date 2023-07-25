@@ -159,6 +159,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            pwd
             ls
             echo "[all]" > inventory.txt
             aws ec2 describe-instances \
@@ -199,10 +200,12 @@ jobs:
       - run:
           name: Configure server
           command: |
+            pwd
             ls
             cat inventory.txt
             cd .circleci/ansible
             ls
+            pwd
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
       #- destroy-environment

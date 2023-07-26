@@ -192,8 +192,8 @@ jobs:
           name: Install dependencies
           command: |
             #apk add --update ansible
-            sudo apt update
-            sudo apt-get install tar gzip
+            apt update
+            apt-get install tar gzip
             #apk add --update alpine-sdk
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible

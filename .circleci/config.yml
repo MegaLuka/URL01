@@ -178,8 +178,8 @@ jobs:
 
   configure-infrastructure:
     docker:
-       - image: python:3.7-alpine3.11
-      #- image: cimg/python:3.11.4
+       #- image: python:3.7-alpine3.11
+       - image: cimg/python:3.8
     steps:
       - checkout
       - add_ssh_keys:
@@ -208,7 +208,7 @@ jobs:
             pwd
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment
+      #- destroy-environment
       # Here's where you will add some code to rollback on failure
   # run-migrations:
   #   docker:

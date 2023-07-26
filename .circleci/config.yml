@@ -163,17 +163,17 @@ jobs:
           command: |
             pwd
             ls
-            echo "[all]" > ~/inventory.txt
+            echo "[all]" > inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> ~/inventory.txt
+              --output text >> inventory.txt
             cat inventory.txt
             ls
       - destroy-environment
       - persist_to_workspace:
           root: ~/
           paths:
-            - inventory.txt
+            - /project/inventory.txt
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -185,7 +185,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
       - attach_workspace:
-          at: ~/
+          at: ~/project
       # Add ssh keys with fingerprint
       # attach workspace
       # - run:

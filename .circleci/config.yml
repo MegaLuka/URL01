@@ -169,7 +169,7 @@ jobs:
             ls
      # - destroy-environment
       - persist_to_workspace:
-          root: ~/
+          root: project
           paths:
             - inventory.txt
       # Here's where you will add some code to rollback on failure
@@ -185,7 +185,7 @@ jobs:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
           
       - attach_workspace:
-          at: ~/
+          at: /home/circleci/project
       # Add ssh keys with fingerprint
       # attach workspace
       - run:

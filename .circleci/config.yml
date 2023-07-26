@@ -178,8 +178,8 @@ jobs:
 
   configure-infrastructure:
     docker:
-       #- image: python:3.7-alpine3.11
-       - image: cimg/python:3.8
+       - image: python:3.8
+       #- image: cimg/python:3.8
     steps:
       - checkout
       - add_ssh_keys:
@@ -192,8 +192,9 @@ jobs:
           name: Install dependencies
           command: |
             #apk add --update ansible
-            #sudo apt update
-            #sudo apt-get install tar gzip
+            sudo apt update
+            sudo apt-get install tar gzip
+            #apk add --update alpine-sdk
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
             ansible --version

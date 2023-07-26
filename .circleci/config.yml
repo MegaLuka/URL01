@@ -178,8 +178,8 @@ jobs:
 
   configure-infrastructure:
     docker:
-       - image: python:3.8
-       #- image: cimg/python:3.8
+       #- image: python:3.8
+       - image: cimg/python:3.11.4
     steps:
       - checkout
       - add_ssh_keys:
@@ -187,35 +187,31 @@ jobs:
       - attach_workspace:
           at: ~/
       # Add ssh keys with fingerprint
-      # attach workspace
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       #apk add --update ansible
-      #       apt update
-      #       apt-get install tar gzip
-      #       #apk add --update alpine-sdk
-      #       python3 -m pip install --user ansible
-      #       python3 -m pip install --upgrade --user ansible
-      #       ansible --version
+      #attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            #apk add --update ansible
+            apt update
+            apt-get install tar gzip
+            #apk add --update alpine-sdk
+            python3 -m pip install --user ansible
+            python3 -m pip install --upgrade --user ansible
+            ansible --version
       - run:
           name: Configure server
           command: |
             cd ..
             ls
             pwd
-            cd .
+            cd ..
             ls
             pwd
-            cat inventory.txt
-            cd .
+            cd ..
             ls
             pwd
             cd .circleci/ansible
-            ls
-            pwd
-            cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i ~/inventory.txt configure-server.yml
       #- destroy-environment
       # Here's where you will add some code to rollback on failure
   # run-migrations:

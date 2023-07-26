@@ -159,6 +159,7 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
+            tree -a
             pwd
             ls
             echo "[all]" > inventory.txt
@@ -167,11 +168,12 @@ jobs:
               --output text >> inventory.txt
             cat inventory.txt
             ls
+            tree -a
      # - destroy-environment
       - persist_to_workspace:
           root: ~/
           paths:
-            - inventory.txt
+            - /project/inventory.txt
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:

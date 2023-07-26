@@ -166,7 +166,7 @@ jobs:
             echo "[all]" > ~/inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> inventory.txt
+              --output text >> ~/inventory.txt
             cat inventory.txt
             ls
       - destroy-environment
@@ -208,6 +208,9 @@ jobs:
             ls
             pwd
             cat inventory.txt
+            cd .
+            ls
+            pwd
             cd .circleci/ansible
             ls
             pwd

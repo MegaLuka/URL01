@@ -162,18 +162,18 @@ jobs:
             tree -a
             pwd
             ls
-            echo "[all]" > inventory.txt
+            echo "[all]" > ~/inventory.txt
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory.txt
             cat inventory.txt
             ls
             tree -a
-     # - destroy-environment
+      - destroy-environment
       - persist_to_workspace:
           root: ~/
           paths:
-            - ~/project/inventory.txt
+            - inventory.txt
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -186,16 +186,13 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
           
-     # - attach_workspace:
-          #at: /home/circleci/project
+      - attach_workspace:
+          at: ~/
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
           name: Install dependencies
           command: |
-            pwd
-            tree -a
-            ls
             #apk add --update ansible
             #sudo apt update
             #sudo apt-get install tar gzip
@@ -213,7 +210,7 @@ jobs:
             pwd
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
-      #- destroy-environment
+      - destroy-environment
       # Here's where you will add some code to rollback on failure
   # run-migrations:
   #   docker:

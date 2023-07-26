@@ -188,16 +188,16 @@ jobs:
           at: ~/
       # Add ssh keys with fingerprint
       # attach workspace
-      - run:
-          name: Install dependencies
-          command: |
-            #apk add --update ansible
-            apt update
-            apt-get install tar gzip
-            #apk add --update alpine-sdk
-            python3 -m pip install --user ansible
-            python3 -m pip install --upgrade --user ansible
-            ansible --version
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       #apk add --update ansible
+      #       apt update
+      #       apt-get install tar gzip
+      #       #apk add --update alpine-sdk
+      #       python3 -m pip install --user ansible
+      #       python3 -m pip install --upgrade --user ansible
+      #       ansible --version
       - run:
           name: Configure server
           command: |

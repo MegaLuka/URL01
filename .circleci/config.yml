@@ -159,7 +159,6 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            tree -a
             pwd
             ls
             echo "[all]" > ~/inventory.txt
@@ -168,7 +167,6 @@ jobs:
               --output text >> inventory.txt
             cat inventory.txt
             ls
-            tree -a
       - destroy-environment
       - persist_to_workspace:
           root: ~/

@@ -201,15 +201,6 @@ jobs:
       - run:
           name: Configure server
           command: |
-            cd ..
-            ls
-            pwd
-            cd ..
-            ls
-            pwd
-            cd ..
-            ls
-            pwd
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml
       #- destroy-environment

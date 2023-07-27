@@ -191,10 +191,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            #apk add --update ansible
             #apt update
             #apt-get install tar gzip
-            #apk add --update alpine-sdk
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
             ansible --version
@@ -203,7 +201,6 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml
-      #- destroy-environment
       # Here's where you will add some code to rollback on failure
   # run-migrations:
   #   docker:

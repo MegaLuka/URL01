@@ -1,11 +1,25 @@
-- name: "Upgrade for ubuntu."
-  import_tasks: upgrade.yml
+---   
+    - name: "update apt packages."
+      become: true
+      apt:
+        update_cache: yes
 
-# - name: "install python for ubuntu."
-#   import_tasks: python.yml
-
-- name: "install nodejs for ubuntu."
-  import_tasks: nodejs.yml
-
-- name: "install pm2 for unbuntu."
-  import_tasks: pm2.yml
+    - name: "upgrade packages"
+      become: true
+      apt:
+        upgrade: yes
+    
+    - name: "install dependencies."
+      become: true
+      apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+    
+    - name: "install pm2"
+      become: true
+      npm:
+        name: pm2
+        global: yes
+        production: yes
+        state: present

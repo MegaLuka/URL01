@@ -208,13 +208,13 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - run:
           name: Run migrations
           command: |
             cd backend
+            npm audit fix
             npm install
+            npm audit fix
             npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to memstash
@@ -225,7 +225,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      #- checkout
+      - checkout
       - run:
           name: Install tar utility
           command: |

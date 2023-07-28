@@ -234,15 +234,15 @@ jobs:
       - run:
           name: Install tar utility
           command: |
-            yum install -y tar gzip
+            yum install -y tar gzip nodejs8
       - attach_workspace:
           at: ~/
       - run:
           name: Install dependencies
           command: |
-            sudo apt update
-            sudo apt upgrade
-            sudo apt install nodejs
+            # apt update
+            # apt upgrade
+            # apt install nodejs8
             Node.js -v
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible

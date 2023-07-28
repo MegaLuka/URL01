@@ -216,6 +216,9 @@ jobs:
             npm cache clean --force
             npm cache verify
             rm -rf node_modules
+            npm audit fix --audit-level=critical --force
+            npm audit fix --force
+            npm audit --audit-level=critical
             npm install
             npm audit fix --audit-level=critical --force
             npm audit fix --force
@@ -234,7 +237,7 @@ jobs:
       - run:
           name: Install tar utility
           command: |
-            yum install -y tar gzip nodejs8
+            yum install -y tar gzip nodejs13
       - attach_workspace:
           at: ~/
       - run:
@@ -243,7 +246,6 @@ jobs:
             # apt update
             # apt upgrade
             # apt install nodejs8
-            Node.js -v
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
       - run:

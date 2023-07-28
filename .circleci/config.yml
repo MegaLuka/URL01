@@ -206,7 +206,7 @@ jobs:
   run-migrations:
     docker:
       #- image: circleci/node:13.8.0
-      - image: cimg/node:20.5.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - run:
@@ -226,14 +226,15 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: amazon/aws-cli
+      #- image: amazon/aws-cli
+      - image: doctrine/nodejs-aws-cli
     steps:
       - checkout
       - run:
           name: Install tar utility
           command: |
             whoami
-            yum install -y tar gzip python3 epel-release python-pip nodejs
+            yum install -y tar gzip python3 epel-release python-pip
       - attach_workspace:
           at: ~/
       - run:

@@ -202,40 +202,38 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-  # run-migrations:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: [backend-build]
-  #     - run:
-  #         name: Run migrations
-  #         command: |
-  #           cd backend
-  #           npm install
-  #           npm run migrations > migrations_dump.txt
-  #     - run:
-  #         name: Send migration results to memstash
-  #         command: |
-  #           if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt then curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1' fi
+  run-migrations:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Run migrations
+          command: |
+            cd backend
+            npm install
+            npm run migrations > migrations_dump.txt
+      - run:
+          name: Send migration results to memstash
+          command: |
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt then curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1' fi
 
   # deploy-frontend:
   #   docker:
-  #     - image: cimg/aws:2023.07
+  #     - image: amazon/aws-cli
   #   steps:
-  #     - checkout
-  #     - run: aws --version
+  #     - attach_workspace:
+  #         at: ~/
+  #     #- checkout
   #     - run:
   #         name: Install dependencies
   #         command: |
   #           sudo apt update
-  #           sudo apt-get install tar gzip
+  #           sudo apt upgrade
   #           sudo apt install nodejs
-  #           npm audit fix --audit-level=critical --force
-  #           npm audit fix --force
-  #           npm audit --audit-level=critical
-  #           Node.js -v && npm --version 
+  #           Node.js -v
   #           python3 -m pip install --user ansible
   #           python3 -m pip install --upgrade --user ansible
   #     - run:
@@ -259,7 +257,7 @@ jobs:
   #           npm run build
   #           tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
   #           aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-  #     #- destroy-environment
+      #- destroy-environment
   #     # Here's where you will add some code to rollback on failure     
 workflows:
   default:

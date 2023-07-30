@@ -224,7 +224,7 @@ jobs:
     docker:
       #- image: amazon/aws-cli
       #- image: cimg/python:3.8.11-node
-      - image: cimg/python:3.10.3-node
+      - image: cimg/python:3.9.9-node
     steps:
       - checkout
       - run:

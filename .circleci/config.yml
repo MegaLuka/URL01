@@ -223,7 +223,7 @@ jobs:
   deploy-frontend:
     docker:
       #- image: amazon/aws-cli
-      - image: cimg/python:3.9.1-node
+      - image: cimg/python:3.8.11-node
     steps:
       - checkout
       - run:

@@ -264,6 +264,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
+      - aws-cli/setup
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
@@ -291,6 +292,7 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat ~/inventory.txt
             ansible-playbook -i ~/inventory.txt deploy-backend.yml
+      - destroy-environment
       # Here's where you will add some code to rollback on failure  
 
 workflows:
@@ -323,4 +325,7 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [deploy-frontend]
+
 

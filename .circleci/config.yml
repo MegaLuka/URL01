@@ -266,7 +266,8 @@ jobs:
       - checkout
       - aws-cli/setup
       # Add ssh keys with fingerprint
-      # attach workspace
+      - attach_workspace:
+          at: ~/
       - add_ssh_keys:
           fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
       - run:
@@ -282,6 +283,8 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            ls
+            pwd
             cd backend
             npm i
             npm run build

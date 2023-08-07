@@ -283,8 +283,10 @@ jobs:
       - run:
           name: Deploy backend
           command: |
+            cd ..
             ls
             pwd
+            cd .
             cd backend
             npm i
             npm run build
@@ -295,8 +297,11 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             pwd
             ls
-            mkdir -p /root/project
-            mv artifact.tar.gz /root/project/artifact.tar.gz
+            mv artifact.tar.gz ..
+            cd ..
+            ls
+            pwd
+            cd .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat ~/inventory.txt

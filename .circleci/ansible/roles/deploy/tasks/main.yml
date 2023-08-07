@@ -37,7 +37,7 @@
     
     - name: Copy artifact.tar.gz file
       copy:
-        src: /root/project/artifact.tar.gz
+        src: /home/circleci/artifact.tar.gz
         dest: /home/ubuntu/backend
     
     - name: Uncompress Backend

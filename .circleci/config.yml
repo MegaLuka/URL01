@@ -259,8 +259,9 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python:3.11.4-node
+      #- image: cimg/python:3.11.4-node
       #- image: circleci/node:13.8.0
+      - image: cimg/node:13.9.0
     steps:
       # Checkout code from git
       - checkout
@@ -283,25 +284,15 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            cd ..
-            ls
-            pwd
-            cd .
             cd backend
             npm i
             npm run build
             cd ..
             ## Zip the directory
-            ls
-            pwd
             tar -C backend -czvf artifact.tar.gz .
             pwd
             ls
-            mv artifact.tar.gz ..
-            cd ..
-            ls
-            pwd
-            cd .
+            # go to place store file?
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat ~/inventory.txt

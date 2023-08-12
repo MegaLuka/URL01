@@ -5,48 +5,48 @@
     #     dest: "/home/ubuntu"
     #     remote_src: yes
 
-    - name: "update apt packages."
-      become: true
-      apt:
-        update_cache: yes
+    # - name: "update apt packages."
+    #   become: true
+    #   apt:
+    #     update_cache: yes
 
-    - name: "upgrade packages"
-      become: true
-      apt:
-        upgrade: yes
+    # - name: "upgrade packages"
+    #   become: true
+    #   apt:
+    #     upgrade: yesls
     
-    - name: "install dependencies."
-      become: true
-      apt:
-        name: ["nodejs", "npm"]
-        state: latest
-        update_cache: yes
+    # - name: "install dependencies."
+    #   become: true
+    #   apt:
+    #     name: ["nodejs", "npm"]
+    #     state: latest
+    #     update_cache: yes
     
-    - name: "install pm2"
-      become: true
-      npm:
-        name: pm2
-        global: yes
-        production: yes
-        state: present
+    # - name: "install pm2"
+    #   become: true
+    #   npm:
+    #     name: pm2
+    #     global: yes
+    #     production: yes
+    #     state: present
 
     - name: Creates directory
       file:
         path: /home/ubuntu/backend
         state: directory
-    
-    - name: Copy artifact.tar.gz file
-      copy:
-        src: /home/circleci/artifact.tar.gz
-        dest: /home/ubuntu/backend
-    
-    - name: Uncompress Backend
-      shell: |
-        cd /home/ubuntu/backend
-        tar xvzf artifact.tar.gz -C .
-        ls -la
+        
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /home/circleci/project/artifact.tar.gz
+        dest: /home/ubuntu/backend/
+        mode: '664'
+  
+    - name: extract file
+      ansible.builtin.shell:
+        chdir: /home/ubuntu/backend/ 
+        cmd: tar -xvzf /home/ubuntu/backend2/artifact.tar.gz
     
     - name: Start PM2
-      shell: |
-        cd /home/ubuntu/backend
-        pm2 start npm --name backend -- start
+      ansible.builtin.shell:
+        chdir: /home/ubuntu/backend
+        cmd: pm2 start npm -- start

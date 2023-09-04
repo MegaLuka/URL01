@@ -278,7 +278,7 @@ jobs:
             echo "apt update is done"
             sudo apt install tar gzip -y
             echo "install tar gzip is done"
-            sudo apt install python3-pip
+            sudo apt install python3-pip -y
             echo "install python3-pip is done"
             python3 -m pip install --user ansible
             echo "install ansible is done"

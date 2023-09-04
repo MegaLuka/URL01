@@ -170,7 +170,7 @@ jobs:
               --output text >> ~/inventory.txt
             cat ~/inventory.txt
             ls
-      - destroy-environment
+      #- destroy-environment
       - persist_to_workspace:
           root: ~/
           paths:
@@ -184,7 +184,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
+          fingerprints: ["37:83:12:9b:af:b2:7f:0f:2a:b7:77:08:f3:0d:c2:2b"]
       - attach_workspace:
           at: ~/
       # Add ssh keys with fingerprint
@@ -270,7 +270,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - add_ssh_keys:
-          fingerprints: ["3f:6d:b5:f2:2f:ac:9e:03:6f:cc:ba:93:30:f2:ec:e1"]
+          fingerprints: ["37:83:12:9b:af:b2:7f:0f:2a:b7:77:08:f3:0d:c2:2b"]
       - run:
           name: Install dependencies
           command: |

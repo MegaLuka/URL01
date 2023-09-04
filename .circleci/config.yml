@@ -275,10 +275,13 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt update -y
-            sudo apt upgrade -y
+            echo "apt update is done"
             sudo apt install tar gzip -y
+            echo "install tar gzip is done"
             python3 -m pip install --user ansible
+            echo "install ansible is done"
             python3 -m pip install --upgrade --user ansible
+            echo "upgrade ansible is done"
       - attach_workspace:
           at: ~/
       - run:

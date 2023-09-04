@@ -44,7 +44,7 @@
     - name: extract file
       ansible.builtin.shell:
         chdir: /home/ubuntu/backend/ 
-        cmd: tar -xvzf /home/ubuntu/backend2/artifact.tar.gz
+        cmd: tar -xvzf /home/ubuntu/backend/artifact.tar.gz
     
     - name: Start PM2
       ansible.builtin.shell:

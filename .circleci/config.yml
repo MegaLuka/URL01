@@ -315,15 +315,15 @@ jobs:
           name: Backend smoke test.
           command: |
             # your code here
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "API_URL = ${API_URL}"
-            echo API_URL="http://${BACKEND_IP}:3030"
+            export API_URL = "http://${BACKEND_IP}:3030"
+            echo "work"
             if curl "${API_URL}/api/status" | grep "ok"
             then
               exit 0
             else
               exit 1
             fi
+            echo "work3"
       - run:
           name: Frontend smoke test.
           command: |

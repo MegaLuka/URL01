@@ -226,7 +226,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - aws-cli/setup
+      - aws-cli/setup:
+          profile_name: "default"
       - run:
           name: Install tar utility
           command: |
@@ -260,7 +261,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - aws-cli/setup
+      - aws-cli/setup:
+          profile_name: "default"
       # Add ssh keys with fingerprint
       - attach_workspace:
           at: ~/
@@ -300,11 +302,11 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - aws-cli/setup
+      - aws-cli/setup:
+          profile_name: "default"
       - run:
           name: Install dependencies
           command: |
-            # your code here
             sudo apt update -y
             sudo apt install curl -y
       - run:
@@ -314,8 +316,8 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            # your code here
-            export API_URL = "http://${BACKEND_IP}:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}/api/status"
             echo "work"
             if curl "${API_URL}/api/status" | grep "ok"
             then
@@ -323,7 +325,7 @@ jobs:
             else
               exit 1
             fi
-            echo "work3"
+            echo "work1"
       - run:
           name: Frontend smoke test.
           command: |

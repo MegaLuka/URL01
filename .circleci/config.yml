@@ -310,13 +310,9 @@ jobs:
             sudo apt update -y
             sudo apt install curl -y
       - run:
-          name: Get backend url
-          command: |
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
-            echo ${BACKEND_IP}
-      - run:
           name: Backend smoke test.
           command: |
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
             echo ${BACKEND_IP}
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}/api/status"
@@ -327,7 +323,6 @@ jobs:
             else
               exit 1
             fi
-            echo "work1"
       - run:
           name: Frontend smoke test.
           command: |

@@ -47,6 +47,11 @@
         cmd: tar -xvzf /home/ubuntu/backend/artifact.tar.gz
     
     - name: Start PM2
+      become: true
+      become_user: ubuntu
       ansible.builtin.shell:
         chdir: /home/ubuntu/backend
-        cmd: npm start
+        cmd: |
+          whoami
+          source ~/.bashrc
+          npm start

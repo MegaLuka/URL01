@@ -8,22 +8,6 @@
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
-
-  pre_tasks:
-   - name: "add block to bashrc"
-     ansible.builtin.blockinfile:
-          path: /home/ubuntu/.bashrc
-          block: |
-            export TYPEORM_CONNECTION="{{ lookup('env', 'TYPEORM_CONNECTION')}}"  
-            export TYPEORM_ENTITIES="{{ lookup('env', 'TYPEORM_ENTITIES')}}"
-            export TYPEORM_HOST="{{ lookup('env', 'TYPEORM_HOST')}}"
-            export TYPEORM_PORT=5432
-            export TYPEORM_USERNAME="{{ lookup('env', 'TYPEORM_USERNAME')}}"
-            export TYPEORM_PASSWORD="{{ lookup('env', 'TYPEORM_PASSWORD')}}"
-            export TYPEORM_DATABASE="{{ lookup('env', 'TYPEORM_DATABASE')}}"
-            export TYPEORM_MIGRATIONS="{{ lookup('env', 'TYPEORM_MIGRATIONS')}}"
-            export TYPEORM_MIGRATIONS_DIR="{{ lookup('env', 'TYPEORM_MIGRATIONS_DIR')}}"
-          state: present
-          create: true
+    
   roles:
     - deploy

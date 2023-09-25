@@ -277,6 +277,7 @@ jobs:
             python3 -m pip install --upgrade pip
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
+            sudo apt install curl -y
       - attach_workspace:
           at: ~/
       - run:
@@ -293,6 +294,17 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat ~/inventory.txt
             ansible-playbook -i ~/inventory.txt deploy-backend.yml
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+            echo ${BACKEND_IP}
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}/api/status"
+            echo "work"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+              exit 0
+            else
+              exit 1
+            fi
       - destroy-environment
       # Here's where you will add some code to rollback on failure
   

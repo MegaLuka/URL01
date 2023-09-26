@@ -52,5 +52,4 @@
       ansible.builtin.shell:
         chdir: /home/ubuntu/backend
         cmd: source /home/ubuntu/.bashrc && npm start
-        args:
-          executable: /bin/bash
+        executable: /bin/bash

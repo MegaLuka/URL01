@@ -51,4 +51,6 @@
       become_user: ubuntu
       ansible.builtin.shell:
         chdir: /home/ubuntu/backend
-        cmd: . .bashrc && npm start
+        cmd: source /home/ubuntu/.bashrc && npm start
+        args:
+          executable: /bin/bash

@@ -49,9 +49,8 @@
     - name: Start PM2
       become: true
       become_user: ubuntu
-      ansible.builtin.shell:
+      ansible.builtin.command:
         chdir: /home/ubuntu/backend
         cmd: |
           whoami
-          source ~/.bashrc
           npm start

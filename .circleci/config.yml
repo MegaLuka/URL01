@@ -232,11 +232,15 @@ jobs:
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
+            pwd
       - run:
           name: Send migration results to memstash
           command: |
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt 
-            then curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+            if grep -q "has been executed successfully." ~/backend/migrations_dump.txt
+            echo "sucess"
+            then 
+              echo "curl success"
+              curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
 
   deploy-frontend:

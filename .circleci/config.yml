@@ -192,7 +192,9 @@ jobs:
           paths:
             - inventory.txt
       - destroy-environment:
-          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
       # Here's where you will add some code to rollback on failure
 
   configure-infrastructure:
@@ -217,6 +219,7 @@ jobs:
       - run:
           name: Configure server
           command: |
+            no_output_timeout: 15m
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
@@ -242,7 +245,10 @@ jobs:
               echo "curl success"
               curl https://kvdb.io/5zH9mrmfztubRshnf4AB5w/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-
+      - destroy-environment:
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
   deploy-frontend:
     docker:
       #- image: amazon/aws-cli

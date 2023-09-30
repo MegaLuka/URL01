@@ -218,7 +218,6 @@ jobs:
             ansible --version
       - run:
           name: Configure server
-          no_output_timeout: 15m
           command: |
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml

@@ -310,8 +310,6 @@ jobs:
             python3 -m pip install --user ansible
             python3 -m pip install --upgrade --user ansible
             sudo apt install curl -y
-      - attach_workspace:
-          at: ~/
       - run:
           name: Deploy backend
           command: |
@@ -340,6 +338,8 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile_name: "default"
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -389,6 +389,8 @@ jobs:
       - aws-cli/setup:
           profile_name: "default"
       # Checkout code from git
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -420,6 +422,8 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile_name: "default"
+      - attach_workspace:
+          at: ~/
       # Checkout code from git
       - run:
           name: Get old stack workflow id
@@ -435,6 +439,8 @@ jobs:
           command: |
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
+              echo OldWorkflowID: "${OldWorkflowID}" 
+              echo "s3://${OldWorkflowID}"
               aws s3 rm "s3://${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"

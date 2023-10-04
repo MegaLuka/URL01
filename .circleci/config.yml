@@ -2,9 +2,6 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.12.5
   aws-cli: circleci/aws-cli@4.0.0
-  #aws-cli: circleci/aws-cli@2.0.3
-  #aws-cli: circleci/aws-cli@3.1.5
-
 
 commands:
   destroy-environment:
@@ -41,7 +38,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:12.19.1
     steps:
       - checkout
       - restore_cache:
@@ -55,14 +52,14 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      # - slack/notify:
-      #     event: fail
-      #     channel: $SLACK_DEFAULT_CHANNEL
-      #     template: basic_fail_1
-      # - slack/notify:
-      #     event: pass
-      #     channel: $SLACK_DEFAULT_CHANNEL
-      #     template: success_tagged_deploy_1
+      - slack/notify:
+          event: fail
+          channel: $SLACK_DEFAULT_CHANNEL
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          channel: $SLACK_DEFAULT_CHANNEL
+          template: success_tagged_deploy_1
 
   build-backend:
     docker:
@@ -194,7 +191,6 @@ jobs:
             workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
             workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
-      # Here's where you will add some code to rollback on failure
   configure-infrastructure:
     docker:
        - image: cimg/python:3.11.4
@@ -218,6 +214,10 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i ~/inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
+      - destroy-environment:
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+            workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
   run-migrations:
     docker:
       - image: cimg/python:3.11.4-node
@@ -441,29 +441,26 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend:
-      #          context: my-context-megaluka
-      # - build-backend:
-      #          context: my-context-megaluka
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]
+      - build-frontend:
+               context: my-context-megaluka
+      - build-backend:
+               context: my-context-megaluka
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]
       - deploy-infrastructure:
             context: my-context-megaluka
-            # requires: [build-frontend, build-backend]
+            requires: [build-frontend, build-backend]
       # - hold: # <<< A job that will require manual approval in the CircleCI web application.
       #     type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
-      #     requires: # We only run the "hold" job when test2 has succeeded
-      #      - deploy-infrastructure
       - configure-infrastructure:
            context: my-context-megaluka
            requires: 
-          #  - hold
              - deploy-infrastructure
       - run-migrations:
           requires: [configure-infrastructure]
@@ -473,6 +470,8 @@ workflows:
             requires: [deploy-frontend, configure-infrastructure]
       - smoke-test:
             requires: [configure-infrastructure, deploy-frontend, deploy-backend]
+      # comment cloudfront due to aws command already deleted old stack which cause conflict with clean up, 
+      # cloudfront-update code is merged with cleanup
       # - cloudfront-update:
       #       requires: [smoke-test]
       - cleanup:

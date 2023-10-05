@@ -1,39 +1,40 @@
-- name: "create user"
-  become: true
-  become_user: ubuntu
-  ansible.builtin.shell:
-    cmd: | 
-      sudo useradd --no-create-home node_exporter
-      wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
-      tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
-      sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
-      rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
+---
+    - name: "create user"
+      become: true
+      become_user: ubuntu
+      ansible.builtin.shell:
+        cmd: | 
+          sudo useradd --no-create-home node_exporter
+          wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
+          tar xzf node_exporter-1.0.1.linux-amd64.tar.gz
+          sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter
+          rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64
 
-- name: "add text to node-exporter.service file"
-  ansible.builtin.blockinfile:
-      path: /etc/systemd/system/node-exporter.service
-      block: |
-        [Unit]
-        Description=Prometheus Node Exporter Service
-        After=network.target
+    - name: "add text to node-exporter.service file"
+      ansible.builtin.blockinfile:
+          path: /etc/systemd/system/node-exporter.service
+          block: |
+            [Unit]
+            Description=Prometheus Node Exporter Service
+            After=network.target
 
-        [Service]
-        User=node_exporter
-        Group=node_exporter
-        Type=simple
-        ExecStart=/usr/local/bin/node_exporter
+            [Service]
+            User=node_exporter
+            Group=node_exporter
+            Type=simple
+            ExecStart=/usr/local/bin/node_exporter
 
-        [Install]
-        WantedBy=multi-user.target
-      state: present
-      create: true
+            [Install]
+            WantedBy=multi-user.target
+          state: present
+          create: true
 
-- name: "configure systemd"
-  become: true
-  become_user: ubuntu
-  ansible.builtin.shell:
-    cmd: | 
-      sudo systemctl daemon-reload
-      sudo systemctl enable node-exporter
-      sudo systemctl start node-exporter
-      sudo systemctl status node-exporter
+    - name: "configure systemd"
+      become: true
+      become_user: ubuntu
+      ansible.builtin.shell:
+        cmd: | 
+          sudo systemctl daemon-reload
+          sudo systemctl enable node-exporter
+          sudo systemctl start node-exporter
+          sudo systemctl status node-exporter

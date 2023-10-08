@@ -462,19 +462,19 @@ workflows:
            context: my-context-megaluka
            requires: 
              - deploy-infrastructure
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #       requires: [configure-infrastructure]
-      # - deploy-backend:
-      #       requires: [deploy-frontend, configure-infrastructure]
-      # - smoke-test:
-      #       requires: [configure-infrastructure, deploy-frontend, deploy-backend]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+            requires: [configure-infrastructure]
+      - deploy-backend:
+            requires: [deploy-frontend, configure-infrastructure]
+      - smoke-test:
+            requires: [configure-infrastructure, deploy-frontend, deploy-backend]
       # # comment cloudfront due to aws command already deleted old stack which cause conflict with clean up, 
       # # cloudfront-update code is merged with cleanup
       # # - cloudfront-update:
       # #       requires: [smoke-test]
-      # - cleanup:
-      #       requires: [smoke-test]
+      - cleanup:
+            requires: [smoke-test]
 
 

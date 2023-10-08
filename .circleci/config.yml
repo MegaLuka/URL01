@@ -223,6 +223,8 @@ jobs:
       - image: cimg/python:3.11.4-node
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - run:
           name: Run migrations
           command: |

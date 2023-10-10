@@ -460,7 +460,7 @@ workflows:
       #     requires: [build-backend]
       - deploy-infrastructure:
             context: my-context-megaluka
-            requires: [build-frontend, build-backend]
+            # requires: [build-frontend, build-backend]
       # - hold: # <<< A job that will require manual approval in the CircleCI web application.
       #     type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
       - configure-infrastructure:

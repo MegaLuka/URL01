@@ -390,11 +390,10 @@ jobs:
             export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
             echo $OldWorkflowID >> ~/OldWorkflowID.txt
             cat ~/OldWorkflowID.txt
-            echo s3 is: udapeople-"${CIRCLE_WORKFLOW_ID:0:7}"
+
             aws cloudformation deploy \
-              --template-file .circleci/files/cloudfront.yml \
-              --stack-name InitialStack \
-              --s3-bucket "udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --template-file .circleci/files/cloudfront_withoutS3.yml \
+              --stack-name InitialStack-new \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
 
